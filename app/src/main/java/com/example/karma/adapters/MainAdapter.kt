@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.karma.R
 import com.example.karma.model.Favor
+import com.example.karma.view.ProfileFragment
 import kotlinx.android.synthetic.main.list_layout.view.*
 
-class MainAdapter(private val context: Context): RecyclerView.Adapter<MainAdapter.MainViewHolder>(){
+class MainAdapter(private val context: Context,var clickListener: onFavorClickListener): RecyclerView.Adapter<MainAdapter.MainViewHolder>(){
 
     private var dataList = mutableListOf<Favor>()
 
     fun setListData(data:MutableList<Favor>){
         dataList = data
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.list_layout, parent, false)
@@ -32,15 +34,27 @@ class MainAdapter(private val context: Context): RecyclerView.Adapter<MainAdapte
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val favor = dataList[position]
-        holder.bindView(favor)
+        holder.bindView(favor, clickListener)
     }
 
     inner class MainViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
-        fun bindView(favor: Favor){
+        fun bindView(favor: Favor, action: onFavorClickListener){
             itemView.textFavor.text = favor.title
             itemView.textDetalles.text = favor.description
             itemView.karmaPoints.text = favor.karma.toString()+"K"
+
+            itemView.setOnClickListener{
+                action.onItemClick(favor, adapterPosition)
+            }
+
+
+        }
+    }
+
+    interface onFavorClickListener{
+        fun onItemClick(item: Favor, position:Int){
+
         }
     }
 

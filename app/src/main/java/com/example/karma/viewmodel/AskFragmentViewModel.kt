@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import com.example.karma.repository.AskFragmentRepository
 
 class AskFragmentViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = AskFragmentRepository(application)
+    private val repository = AskFragmentRepository()
     val isSuccessful: LiveData<Boolean>
     init{
         isSuccessful = repository.isSuccessful

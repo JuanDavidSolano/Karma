@@ -72,8 +72,10 @@ class AskFragment : Fragment() {
         viewModel.isSuccessful.observe(viewLifecycleOwner, Observer {
             //handle
             if(!it){
-                Toast.makeText(context,"Error en la creacion",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"No puedes solicitar otro favor",Toast.LENGTH_SHORT).show()
+                navController!!.navigate(R.id.action_ask_main)
             }else{
+                Toast.makeText(context,"Favor creado con exito",Toast.LENGTH_SHORT).show()
                 navController!!.navigate(R.id.action_ask_main)
             }
 

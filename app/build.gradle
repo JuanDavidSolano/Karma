@@ -26,6 +26,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     def lifecycle_version = "2.2.0"
 
     implementation platform('com.google.firebase:firebase-bom:25.11.0')

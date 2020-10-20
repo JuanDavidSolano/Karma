@@ -10,7 +10,7 @@ import com.example.karma.model.Favor
 import kotlinx.android.synthetic.main.doing_layout.view.*
 import kotlinx.android.synthetic.main.favs_layout.view.*
 
-class DoingAdapter (private val context: Context): RecyclerView.Adapter<DoingAdapter.DoingViewHolder>(){
+class DoingAdapter (private val context: Context, var clickListener: onFavorClickListener): RecyclerView.Adapter<DoingAdapter.DoingViewHolder>(){
     private var dataList = mutableListOf<Favor>()
     fun setListData(data:MutableList<Favor>){
         dataList = data
@@ -30,14 +30,24 @@ class DoingAdapter (private val context: Context): RecyclerView.Adapter<DoingAda
 
     override fun onBindViewHolder(holder: DoingAdapter.DoingViewHolder, position: Int) {
         val favor = dataList[position]
-        holder.bindView(favor)
+        holder.bindView(favor, clickListener)
     }
 
     inner class DoingViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
-        fun bindView(favor: Favor){
+        fun bindView(favor: Favor, action: MainAdapter.onFavorClickListener){
             itemView.textTitle.text = favor.title
             itemView.textKarma.text = "Karma: "+favor.karma
+
+            itemView.setOnClickListener{
+                action.onItemClick(favor, adapterPosition)
+            }
+        }
+    }
+
+    interface onFavorClickListener{
+        fun onItemClick(item: Favor, position:Int){
+
         }
     }
 }

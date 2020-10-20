@@ -5,19 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.karma.R
 import com.example.karma.adapters.PersonalFavorsAdapter
+import com.example.karma.adapters.PersonalFavorsAdapter.onFavorClickListener
 import com.example.karma.model.Favor
+import com.example.karma.viewmodel.ProfileFragmentViewModel
+import com.example.karma.viewmodel.mainHomeFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_mainhome.*
 
 
-class mainhomeFragment : Fragment() {
+class mainhomeFragment : Fragment(), onFavorClickListener {
 
     private lateinit var adapter: PersonalFavorsAdapter
     lateinit var navController: NavController
+    private val viewModel by lazy{ ViewModelProvider(this).get(mainHomeFragmentViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,21 +43,11 @@ class mainhomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        adapter = PersonalFavorsAdapter(view.context)
+        adapter = PersonalFavorsAdapter(view.context, this)
 
         favorView.layoutManager = LinearLayoutManager(view.context)
         favorView.adapter= adapter
-
-        val dummyList = mutableListOf<Favor>()
-        dummyList.add(Favor("Traer a mi novia","Traer a mi novia desde la casqa de su papa",3,"test","test","Sin asignar"))
-        dummyList.add(Favor("Llorar conmigo","Llorar conmigo porque perdi el parcial",1,"test2","test2","Asignado"))
-        dummyList.add(Favor("Comprarme un chocolate","Por favor que sea un m&m amarillo",2,"test2","test2","Entregado"))
-        dummyList.add(Favor("Traer a mi novia","Traer a mi novia desde la casqa de su papa",3,"test","test","Sin asignar"))
-        dummyList.add(Favor("Llorar conmigo","Llorar conmigo porque perdi el parcial",1,"test2","test2","Sin asignar"))
-        dummyList.add(Favor("Comprarme un chocolate","Por favor que sea un m&m amarillo",2,"test2","test2","Entregado"))
-
-        adapter.setListData(dummyList)
-        adapter.notifyDataSetChanged()
+        observeFavors()
 
 
         textPedirUnFavor.setOnClickListener {
@@ -59,5 +56,17 @@ class mainhomeFragment : Fragment() {
         }
 
     }
+
+    fun observeFavors(){
+        viewModel.fetchUserData().observe(viewLifecycleOwner, Observer {
+            adapter.setListData(it)
+            adapter.notifyDataSetChanged()
+        })
+    }
+
+    override fun onItemClick(item: Favor, position: Int) {
+        viewModel.modifyState(item.title)
+    }
+
 
 }

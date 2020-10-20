@@ -10,7 +10,7 @@ import com.example.karma.model.Favor
 import kotlinx.android.synthetic.main.favs_layout.view.*
 import kotlinx.android.synthetic.main.list_layout.view.*
 
-class PersonalFavorsAdapter (private val context: Context): RecyclerView.Adapter<PersonalFavorsAdapter.PersonalFavsViewHolder>(){
+class PersonalFavorsAdapter (private val context: Context, var clickListener: onFavorClickListener): RecyclerView.Adapter<PersonalFavorsAdapter.PersonalFavsViewHolder>(){
     private var dataList = mutableListOf<Favor>()
 
     fun setListData(data:MutableList<Favor>){
@@ -32,14 +32,23 @@ class PersonalFavorsAdapter (private val context: Context): RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: PersonalFavorsAdapter.PersonalFavsViewHolder, position: Int) {
         val favor = dataList[position]
-        holder.bindView(favor)
+        holder.bindView(favor, clickListener)
     }
 
     inner class PersonalFavsViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
-        fun bindView(favor: Favor){
+        fun bindView(favor: Favor, action: onFavorClickListener){
             itemView.textTitulo.text = favor.title
             itemView.textEstado.text = "Estado: "+favor.status
+            itemView.setOnClickListener{
+                action.onItemClick(favor, adapterPosition)
+            }
+        }
+    }
+
+    interface onFavorClickListener{
+        fun onItemClick(item: Favor, position:Int){
+
         }
     }
 }

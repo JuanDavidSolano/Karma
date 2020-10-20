@@ -25,7 +25,7 @@ class ProfileFragmentRepository {
                     val favor: Favor = childDataSnapshot.getValue(Favor::class.java)!!
                     //Log.v("MyOut", "" + childDataSnapshot.getKey()); //displays the key for the node
                     Log.v("MyOut", "" + favor.title);
-                    if(favor.status=="Sin asignar") {
+                    if(favor.status=="Sin asignar" && favor.user!=firebaseAuth.uid.toString()) {
                         favorList.add(favor)
                     }
                 }

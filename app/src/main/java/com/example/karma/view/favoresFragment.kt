@@ -16,8 +16,9 @@ import com.example.karma.viewmodel.favoresFragmentViewModel
 import com.example.karma.viewmodel.mainHomeFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_favores.*
 import kotlinx.android.synthetic.main.fragment_mainhome.*
+import com.example.karma.adapters.DoingAdapter.onFavorClickListener
 
-class favoresFragment : Fragment() {
+class favoresFragment : Fragment(), onFavorClickListener {
 
     private lateinit var adapter: DoingAdapter
     private val viewModel by lazy{ ViewModelProvider(this).get(favoresFragmentViewModel::class.java) }
@@ -39,7 +40,7 @@ class favoresFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = DoingAdapter(view.context)
+        adapter = DoingAdapter(view.context, this)
 
         doingView.layoutManager = LinearLayoutManager(view.context)
         doingView.adapter= adapter
@@ -54,4 +55,7 @@ class favoresFragment : Fragment() {
         })
     }
 
+    override fun onItemClick(item: Favor, position: Int) {
+        viewModel.modifyState(item.title)
+    }
 }

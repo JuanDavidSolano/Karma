@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.karma.R
 import com.example.karma.model.Favor
-import com.example.karma.view.ProfileFragment
 import kotlinx.android.synthetic.main.list_layout.view.*
 
 class MainAdapter(private val context: Context,var clickListener: onFavorClickListener): RecyclerView.Adapter<MainAdapter.MainViewHolder>(){

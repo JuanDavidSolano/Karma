@@ -41,4 +41,26 @@ class favoresFragmentRepository {
         database.child("favores").addValueEventListener(postListener)
         return mutableData
     }
+
+    fun modifyState(title:String){
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (childDataSnapshot in dataSnapshot.children) {
+                    val favor: Favor = childDataSnapshot.getValue(Favor::class.java)!!
+                    Log.v("MyOutA", "" + childDataSnapshot.getKey()); //displays the key for the node
+                    Log.v("MyOutA", "" + favor.user);
+                    if(favor.title == title && favor.status == "Asignado") {
+                        database.child("favores").child(childDataSnapshot.getKey().toString()).setValue(Favor(favor.title,favor.description,favor.karma,favor.user,favor.doer,"Entregado"))
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w("MyOut", "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        }
+        database.child("favores").addValueEventListener(postListener)
+    }
 }

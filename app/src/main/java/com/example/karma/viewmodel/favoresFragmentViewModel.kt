@@ -18,4 +18,7 @@ class favoresFragmentViewModel : ViewModel() {
         return mutableData
     }
 
+    fun modifyState(title:String){
+        repository.modifyState(title)
+    }
 }

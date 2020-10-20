@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.karma.R
 import com.example.karma.model.Favor
 import kotlinx.android.synthetic.main.doing_layout.view.*
-import kotlinx.android.synthetic.main.favs_layout.view.*
 
 class DoingAdapter (private val context: Context, var clickListener: onFavorClickListener): RecyclerView.Adapter<DoingAdapter.DoingViewHolder>(){
     private var dataList = mutableListOf<Favor>()
@@ -35,7 +34,7 @@ class DoingAdapter (private val context: Context, var clickListener: onFavorClic
 
     inner class DoingViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
 
-        fun bindView(favor: Favor, action: MainAdapter.onFavorClickListener){
+        fun bindView(favor: Favor, action: onFavorClickListener){
             itemView.textTitle.text = favor.title
             itemView.textKarma.text = "Karma: "+favor.karma
 
